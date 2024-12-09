@@ -13,17 +13,17 @@ public class Explosion : MonoBehaviour
         _spawner.Created -= Explode;
     }
 
+    public void Initialize(Spawner spawner)
+    {
+        _spawner = spawner;
+        _spawner.Created += Explode;
+    }
+
     private void Explode(List<Cube> cubes, Vector3 center)
     {
         foreach (Cube cube in cubes)
         {
             cube.Rigidbody.AddExplosionForce(_force, center, _explosionRadius);
         }
-    }
-
-    public void Initialize(Spawner spawner)
-    {
-        _spawner = spawner;
-        _spawner.Created += Explode;
     }
 }

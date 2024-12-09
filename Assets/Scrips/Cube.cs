@@ -6,14 +6,13 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Renderer))]
 [RequireComponent(typeof(Explosion))]
-
 public class Cube : MonoBehaviour
 {
-    public event Action<Cube> Exploded;
-
     private float _maximumChance = 100f;
     private float _minimumChance = 0f;
     private Explosion _explosion;
+
+    public event Action<Cube> Exploded;
 
     public Rigidbody Rigidbody { get; private set; }
     public float ChanceToSplit { get; private set; } = 100f;
@@ -25,16 +24,16 @@ public class Cube : MonoBehaviour
         _explosion = GetComponent<Explosion>();
     }
 
+    private void OnMouseUpAsButton()
+    {
+        TryToSplit();
+    }
+
     public void Initialization(Vector3 scale, float change, Spawner spawner)
     {
         transform.localScale = scale;
         ChanceToSplit = change;
         _explosion.Initialize(spawner);
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        TryToSplit();
     }
 
     private void TryToSplit()

@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] Cube _cube;
-    [SerializeField] Transform _spawnPoint;
+    [SerializeField] private Cube _cube;
+    [SerializeField] private Transform _spawnPoint;
 
     private int _initialCubes = 6;
     private int _minCountCubes = 2;
