@@ -29,7 +29,7 @@ public class Cube : MonoBehaviour
         TryToSplit();
     }
 
-    public void Initialization(Vector3 scale, float change, Spawner spawner)
+    public void Configure(Vector3 scale, float change, Spawner spawner)
     {
         transform.localScale = scale;
         ChanceToSplit = change;

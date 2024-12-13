@@ -6,9 +6,9 @@ public class Explosion : MonoBehaviour
 {
     [SerializeField] private float _explosionRadius = 40f;
     [SerializeField] private Spawner _spawner;
-    [SerializeField] private float _force = 1000;
+    [SerializeField] private float _force = 100;
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _spawner.Created -= Explode;
     }

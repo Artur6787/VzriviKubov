@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
     private void CreateRedusedCubes(Cube cube)
     {
         cube.Exploded -= CreateRedusedCubes;
-        int countCubes = Random.Range(_minCountCubes, _maxCountCubes);
+        int countCubes = Random.Range(_minCountCubes, _maxCountCubes + 1);
         List<Cube> cubes = new();
 
         Vector3 scale = cube.transform.localScale / _indexToDecreaseScale;
@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < countCubes; i++)
         {
             Cube newCube = CreateCube(cube, cube.transform.position);
-            newCube.Initialization(scale, chanceToSplite, this);
+            newCube.Configure(scale, chanceToSplite, this);
             cubes.Add(newCube);
         }
 
