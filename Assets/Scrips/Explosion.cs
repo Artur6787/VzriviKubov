@@ -1,29 +1,71 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
     [SerializeField] private float _explosionRadius = 40f;
-    [SerializeField] private Spawner _spawner;
-    [SerializeField] private float _force = 100;
+    [SerializeField] private float _forceExplosion = 100;
 
-    private void OnDestroy()
+    public void Explode()
     {
-        _spawner.Created -= Explode;
-    }
+        float radius = _explosionRadius / transform.transform.localScale.x;
+        float force = _forceExplosion / transform.transform.localScale.x;
 
-    public void Initialize(Spawner spawner)
-    {
-        _spawner = spawner;
-        _spawner.Created += Explode;
-    }
-
-    private void Explode(List<Cube> cubes, Vector3 center)
-    {
-        foreach (Cube cube in cubes)
+        foreach (Rigidbody cube in GetCubesRigitbody())
         {
-            cube.Rigidbody.AddExplosionForce(_force, center, _explosionRadius);
+            cube.AddExplosionForce(force, transform.position, radius);
         }
     }
+
+    private List<Rigidbody> GetCubesRigitbody()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+        List<Rigidbody> cubes = new();
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.attachedRigidbody != null)
+            {
+                cubes.Add(hit.attachedRigidbody);
+            }
+        }
+
+        return cubes;
+    }
 }
+//using System;
+//using System.Collections.Generic;
+//using UnityEngine;
+
+//public class Explosion : MonoBehaviour
+//{
+//    [SerializeField] private float _radiusExplosion = 40;
+//    [SerializeField] private float _forceExplosion = 200;
+
+//    public void Explode()
+//    {
+//        float radius = _radiusExplosion / transform.transform.localScale.x;
+//        float force = _forceExplosion / transform.transform.localScale.x;
+
+//        foreach (Rigidbody cube in GetCubesRigitbody())
+//        {
+//            cube.AddExplosionForce(force, transform.position, radius);
+//        }
+//    }
+
+//    private List<Rigidbody> GetCubesRigitbody()
+//    {
+//        Collider[] hits = Physics.OverlapSphere(transform.position, _radiusExplosion);
+//        List<Rigidbody> cubes = new();
+
+//        foreach (Collider hit in hits)
+//        {
+//            if (hit.attachedRigidbody != null)
+//            {
+//                cubes.Add(hit.attachedRigidbody);
+//            }
+//        }
+
+//        return cubes;
+//    }
+//}
