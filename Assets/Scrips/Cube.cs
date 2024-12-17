@@ -7,9 +7,9 @@ public class Cube : MonoBehaviour
 {
     private float _maximumChance = 100f;
     private float _minimumChance = 0f;
-    private Explosion _eplosion;
+    private Exploder _eplosion;
 
-    public event Action<Cube> Exploded;
+    public event Action<Cube> Split;
 
     public Rigidbody Rigidbody { get; private set; }
     public float ChanceToSplit { get; private set; } = 100f;
@@ -18,7 +18,7 @@ public class Cube : MonoBehaviour
     {
         GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
         Rigidbody = GetComponent<Rigidbody>();
-        _eplosion = GetComponent<Explosion>();
+        _eplosion = GetComponent<Exploder>();
     }
 
     private void OnMouseUpAsButton()
@@ -32,73 +32,24 @@ public class Cube : MonoBehaviour
         ChanceToSplit = change;
     }
 
+    public void TriggerExplosion()
+    {
+        _eplosion.Explode();
+    }
+
     private void TryToSplit()
     {
         float chance = Random.Range(_minimumChance, _maximumChance);
 
         if (chance <= ChanceToSplit)
         {
-            Exploded?.Invoke(this);
+            Split?.Invoke(this);
         }
         else
         {
             _eplosion.Explode();
         }
 
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
-//using System;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using Random = UnityEngine.Random;
-
-//[RequireComponent(typeof(Rigidbody))]
-//[RequireComponent(typeof(Renderer))]
-//[RequireComponent(typeof(Explosion))]
-
-//public class Cube1 : MonoBehaviour
-//{
-//    private float _minChanceToSplit = 0;
-//    private float _maxChanceToSplit = 100;
-//    private Explosion _eplosion;
-
-//    public event Action<Cube1> Splited;
-
-//    public Rigidbody Rigidbody { get; private set; }
-//    public float ChanceToSplit { get; private set; } = 100;
-
-//    private void Awake()
-//    {
-//        Rigidbody = GetComponent<Rigidbody>();
-//        GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
-//        _eplosion = GetComponent<Explosion>();
-//    }
-
-//    private void OnMouseUpAsButton()
-//    {
-//        TryToSplit();
-//    }
-
-//    public void Init(Vector3 scale, float change)
-//    {
-//        transform.localScale = scale;
-//        ChanceToSplit = change;
-//    }
-
-//    private void TryToSplit()
-//    {
-//        float chance = Random.Range(_minChanceToSplit, _maxChanceToSplit);
-
-//        if (chance <= ChanceToSplit)
-//        {
-//            Splited?.Invoke(this);
-//        }
-//        else
-//        {
-//            _eplosion.Explode();
-//        }
-
-//        Destroy(gameObject);
-//    }
-//}
